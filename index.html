@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de control Practica JSON</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <div class="card led-card" id="led-container">
+        <h2>Estado actual del LED</h2>
+        <div class="status-indicator">
+            <div class="led-light" id="led-light"></div>
+            <span id="led-text">Apagado</span>
+        </div>
+        <button id="toggle-button" class="button">Encender LED</button>
+    </div>
+    <div class="card graph-card">
+        <h2>Grafica de Estado del LED</h2>
+        <div class="container-tabla">
+            <canvas id="tablaled"></canvas>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
