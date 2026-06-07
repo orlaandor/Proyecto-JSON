@@ -1,0 +1,7 @@
+# Tiempo de uso de los leds (en segundos)
+{
+    "tiempo_verde": 15,
+    "tiempo_amarillo": 3,
+    "tiempo_rojo": 10,
+    "estado_actual": "Verde"
+}
