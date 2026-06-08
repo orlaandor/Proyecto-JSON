@@ -1,13 +1,11 @@
-#Backend waos
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import json
 import os
 
 app = FastAPI()
 
-# Permite las conexiones del frontend
+# Configuración de CORS para que tu navegador no bloquee la conexión
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,14 +16,9 @@ app.add_middleware(
 
 DB_FILE = "datos.json"
 
-# 1. Define los datos que queremos recibir
-class ConfiguracionSemaforo(BaseModel):
-    tiempo_verde: int
-    tiempo_amarillo: int
-    tiempo_rojo: int
-
-# Funciones para manejar el archivo JSON
 def leer_json():
+    if not os.path.exists(DB_FILE):
+        return {"status": "off"}
     with open(DB_FILE, "r") as f:
         return json.load(f)
 
@@ -33,26 +26,21 @@ def guardar_json(datos):
     with open(DB_FILE, "w") as f:
         json.dump(datos, f, indent=4)
 
-
-# 2. ENDPOINT PARA LA PÁGINA WEB: Guardar nuevos tiempos
-@app.post("/api/configurar")
-def cambiar_tiempos(nueva_config: ConfiguracionSemaforo):
-    # Leemos lo que tiene el JSON actualmente
-    datos_actuales = leer_json()
-    
-    # Reemplazamos los tiempos viejos con los que el usuario puso en el frontend
-    datos_actuales["tiempo_verde"] = nueva_config.tiempo_verde
-    datos_actuales["tiempo_amarillo"] = nueva_config.tiempo_amarillo
-    datos_actuales["tiempo_rojo"] = nueva_config.tiempo_rojo
-    
-    # Guardamos los cambios en el archivo datos.json
-    guardar_json(datos_actuales)
-    
-    return {"message": "Configuración actualizada con éxito", "datos": datos_actuales}
-
-
-# 3. ENDPOINT PARA EL ESP32: Leer la configuración actual
-@app.get("/api/sistema-completo")
-def obtener_sistema():
-    # Devuelve todo el JSON para que el ESP32 o la Web sepan los tiempos y el estado actual
+# Endpoint para saber el estado actual
+@app.get("/api/led/status")
+def get_status():
     return leer_json()
+
+# Endpoint para cambiar el estado con el botón
+@app.post("/api/led/toggle")
+def toggle_status():
+    datos = leer_json()
+    
+    # Cambiamos el estado de manera inversa
+    if datos.get("status") == "on":
+        datos["status"] = "off"
+    else:
+        datos["status"] = "on"
+        
+    guardar_json(datos)
+    return {"success": True, "newStatus": datos["status"]}
