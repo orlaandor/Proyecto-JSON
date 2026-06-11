@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de control Practica JSON</title>
+    <title>Practica JSON</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+<script src="script.js" defer></script>
 </head>
+
 <body>
-    <div class="container">
-    <div class="card led-card" id="led-container">
-        <h2>Estado actual del LED</h2>
-        <div class="status-indicator">
-            <div class="led-light" id="led-light"></div>
-            <span id="led-text">Apagado</span>
-        </div>
-        <button id="toggle-button" class="a-button">Encender LED</button>
-    </div>
-    <div class="card graph-card">
-        <h2>Grafica de Estado del LED</h2>
-        <div class="container-tabla">
-            <canvas id="tablaled"></canvas>
-        </div>
-    </div>
+    <h1>Practica JSON</h1>
+    <p>En esta practica se emplea JSON como protocolo de intercambio de datos</p>
+
+    <div id="contenedor-semaforo">
     
-    <script src="script.js"></script>
-</body>
-</html>
+        <div id="rojo" class="luz"></div>
+        <div id="amarillo" class="luz"></div>
+        <div id="verde" class="luz"></div>
+
+    </div>
+
+    <div id="panel-control">
+    <input type="number" id="tiempo-rojo" placeholder="Tiempo luz roja">
+    <input type="number" id="tiempo-amarillo" placeholder="Tiempo luz amarilla">
+    <input type="number" id="tiempo-verde" placeholder="Tiempo luz verde">
+    <button id="enviar">Cargar archivo JSON</button>
+
+    </div>
+
+    </body>
+
+    </html>
